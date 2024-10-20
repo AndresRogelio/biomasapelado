@@ -112,14 +112,8 @@ Los resultados incluyen:
 Este script permite una evaluación integral de la biomasa de árboles en Cerro Pelado, proporcionando insights sobre la salud del ecosistema y su capacidad de captura de carbono.
 
 ## Referencias
-ForestGEO (CTFS):
 - ForestGEO. (n.d.). Center for Tropical Forest Science. Recuperado de https://www.forestgeo.si.edu
-- Proporciona datos y métodos para el estudio de la biodiversidad y la biomasa en ecosistemas forestales.
-Función density.ind():
 - Chave, J., et al. (2006). Improved allometric models to estimate the aboveground biomass of tropical trees. Global Change Biology, 12(1), 8-20.
-- Utilizada en density.ind(df = x1, plot = "pantree", wsg = wsgpan) para estimar la densidad de madera.
-Función biomass.CTFSdb():
 - Cao, S., & O'Hara, J. (2014). Estimating aboveground biomass in temperate forests using a new biomass equation. Forest Ecology and Management, 316, 69-76.
-Exportación de datos con write.xlsx():
 - Kane, M. (2015). xlsx: Read, write, format Excel 2007 and Excel 97/2000/XP/2003 files. Recuperado de https://cran.r-project.org/web/packages/xlsx/index.html
 
