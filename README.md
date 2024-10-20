@@ -11,31 +11,77 @@ Este script de R está diseñado para analizar la biomasa de árboles en tres ce
   - `date`
   - `CTFSRPackage` (debe estar instalado y cargado)
 
-## Estructura del Código
+## Explicación del Código
 
-### 1. Configuración del Entorno
-- Se establece el directorio de trabajo.
-- Se carga el paquete de ForestGEO y los conjuntos de datos.
+### 1. Configuración Inicial
+- **setwd()**: Establece el directorio de trabajo donde se encuentran los archivos de datos.
+- **getwd()**: Muestra el directorio de trabajo actual.
 
-### 2. Carga de Datos
-- Se importan datos de tallos y árboles para tres censos (Cerro Pelado 1, 2 y 3).
-- Se carga una base de datos de densidad de madera para árboles en Panamá.
+### 2. Cargar Paquetes y Datos
+- **attach()**: Carga el paquete de ForestGEO (CTFS) que contiene funciones y datos necesarios para el análisis.
+- **search()**: Muestra los paquetes y objetos actualmente cargados en el entorno de trabajo.
 
-### 3. Análisis de Datos
-- Se obtienen nombres únicos de especies de árboles y se calculan las densidades de madera.
-- Se calcula la biomasa (AGB) usando la función `biomass.CTFSdb` para cada censo.
-- Se generan resúmenes de biomasa, contenido de carbono y emisiones de CO2.
+### 3. Carga de Datos de Censos
+- Se cargan varios archivos CSV para tres censos:
+```r
+cp1stem <- read.csv("cp1stem.csv") cp1tree <- read.csv("cp1tree.csv")
+```
+- Se importan datos de tallos y árboles para los censos 1, 2 y 3, y se limitan a las primeras 19 columnas.
 
-### 4. Visualización
-- Se crean gráficos de barras para las 7 especies más abundantes en cada censo.
-- Se realiza un análisis de la biomasa de árboles muertos y reclutados entre censos.
+### 4. Densidad de Madera
+- Carga una base de datos de densidad de madera para árboles en Panamá:
+```r
+wsgpan <- read.csv("wsgpantree.csv")
+```
 
-### 5. Cálculos Adicionales
-- Se calcula el crecimiento neto anual promedio de AGB y la tasa de eliminación de CO2.
+### 5. Análisis de Especies y Densidad
+- Se obtienen los nombres únicos de especies de árboles del primer censo y se convierten en un `data.frame`:
+```r
+x1 <- unique(cp1tree$sp) x1 <- data.frame(x1) colnames(x1) <- "sp"
+```
 
-### 6. Salida de Datos
-- Resultados de la biomasa se exportan a un archivo Excel (`resagb.xlsx`).
-- Resultados de AGB se guardan en un archivo de texto (`salidacp1.txt`).
+### 6. Cálculo de Densidad de Madera
+- Utiliza la función `density.ind()` para obtener la densidad de madera de las especies en `x1`:
+```r
+dm <- density.ind(df = x1, plot = "pantree", wsg = wsgpan)
+```
+
+### 7. Cálculo de Biomasa
+- Calcula la biomasa (AGB) para el primer censo utilizando datos de tallos y árboles:
+```r
+AGBstemcp1 <- biomass.CTFSdb(RStemTable = cp1stem, RTreeTable = cp1tree, whichtable="stem", plot = "pantree", dbhunit = "mm", wsgdata = wsgpan, forest="moist")
+```
+- Se hace lo mismo para los censos 2 y 3.
+
+### 8. Resultados de Biomasa
+- Calcula y muestra la cantidad total de biomasa en una hectárea, así como el contenido de carbono y las emisiones de CO2 equivalentes:
+```r
+bb <- round(sum(AGBstemcp1$agb, na.rm = TRUE), 1)
+```
+
+### 9. Exportación de Resultados
+- Exporta los resultados de AGB a un archivo de texto y un archivo Excel:
+```r
+sink("salidacp1.txt", split = TRUE) AGBstemcp1[ ,c(3,5,6,11,19,20)] sink() write.xlsx(AGBstemcp1, "resagb.xlsx")
+```
+
+### 10. Análisis de Biomasa Muerta y Reclutada
+- Se calcula la biomasa de árboles muertos y reclutados entre censos:
+```r
+deadagb1 <- subset(AGBstemcp1, AGBstemcp1$status == "A" & AGBstemcp2$status == "D")
+```
+
+### 11. Visualización de Resultados
+- Crea gráficos de barras para las 7 especies más abundantes en cada censo:
+```r
+barplot(top7_cp1$agb, names.arg = top7_cp1$sp, ...)
+```
+
+### 12. Cálculos de Crecimiento
+- Se calcula el crecimiento neto anual promedio en AGB y la tasa de eliminación de CO2:
+```r
+(AGBcp2-AGBcp1)/t1
+```
 
 ## Cómo Ejecutar
 1. Asegúrate de que todos los archivos CSV necesarios estén en el directorio de trabajo especificado.
