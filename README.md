@@ -24,7 +24,8 @@ Este script de R está diseñado para analizar la biomasa de árboles en tres ce
 ### 3. Carga de Datos de Censos
 - Se cargan varios archivos CSV para tres censos:
 ```r
-cp1stem <- read.csv("cp1stem.csv") cp1tree <- read.csv("cp1tree.csv")
+cp1stem <- read.csv("cp1stem.csv")
+cp1tree <- read.csv("cp1tree.csv")
 ```
 - Se importan datos de tallos y árboles para los censos 1, 2 y 3, y se limitan a las primeras 19 columnas.
 
@@ -37,7 +38,9 @@ wsgpan <- read.csv("wsgpantree.csv")
 ### 5. Análisis de Especies y Densidad
 - Se obtienen los nombres únicos de especies de árboles del primer censo y se convierten en un `data.frame`:
 ```r
-x1 <- unique(cp1tree$sp) x1 <- data.frame(x1) colnames(x1) <- "sp"
+x1 <- unique(cp1tree$sp)
+x1 <- data.frame(x1)
+colnames(x1) <- "sp"
 ```
 
 ### 6. Cálculo de Densidad de Madera
