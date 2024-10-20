@@ -1,4 +1,4 @@
-# Análisis de Biomasa en Cerro Pelado
+# Análisis de Biomasa en Cerro Pelado (Panamá)
 
 ## Descripción
 Este script de R está diseñado para analizar la biomasa de árboles en tres censos realizados en la región de Cerro Pelado, Panamá. Utiliza datos de dos tablas: una de tallos (`stem`) y otra de árboles (`tree`), y calcula la biomasa, el contenido de carbono y las emisiones de CO2 equivalentes a partir de estos datos.
